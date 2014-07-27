@@ -1,4 +1,4 @@
-# Mirador-Node
+# Mirador Node.js Client `npm install mirador-cv`
 Node.js client for the mirador API
 
 ## Installation
@@ -7,7 +7,7 @@ The client is available via npm:
 
 ```bash
 # save into your package.json file
-npm install mirador --save
+npm install mirador-cv --save
 ```
 
 ## Usage
