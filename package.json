@@ -1,0 +1,37 @@
+{
+  "name": "mirador-node",
+  "version": "0.0.1",
+  "description": "Node.js client for Mirador API ",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodeunit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/mirador-cv/mirador-node"
+  },
+  "keywords": [
+    "node",
+    "mirador",
+    "computer",
+    "vision",
+    "image",
+    "moderation",
+    "image-moderation"
+  ],
+  "author": "Nick Jacob",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mirador-cv/mirador-node/issues"
+  },
+  "homepage": "https://github.com/mirador-cv/mirador-node",
+  "dependencies": {
+    "underscore": "~1.6.0",
+    "superagent": "~0.18.2",
+    "async": "~0.9.0",
+    "superagent-prefix": "0.0.2"
+  },
+  "devDependencies": {
+    "nodeunit": "~0.9.0"
+  }
+}
