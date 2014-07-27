@@ -1,5 +1,5 @@
 {
-  "name": "mirador-node",
+  "name": "mirador",
   "version": "0.0.1",
   "description": "Node.js client for Mirador API ",
   "main": "index.js",
@@ -11,11 +11,8 @@
     "url": "http://github.com/mirador-cv/mirador-node"
   },
   "keywords": [
-    "node",
     "mirador",
-    "computer",
-    "vision",
-    "image",
+    "computer vision",
     "moderation",
     "image-moderation"
   ],
@@ -28,8 +25,7 @@
   "dependencies": {
     "underscore": "~1.6.0",
     "superagent": "~0.18.2",
-    "async": "~0.9.0",
-    "superagent-prefix": "0.0.2"
+    "async": "~0.9.0"
   },
   "devDependencies": {
     "nodeunit": "~0.9.0"
