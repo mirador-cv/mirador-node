@@ -1,4 +1,6 @@
-# Mirador Node.js Client `npm install mirador-cv`
+# Mirador Node.js Client 
+## `npm install mirador-cv`
+
 Node.js client for the mirador API
 
 ## Installation
