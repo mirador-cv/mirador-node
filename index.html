@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Mirador-node by mirador-cv</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Mirador-node</h1>
+          <h2>Node.js client for the Mirador API (http://mirador.im)</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/mirador-cv/mirador-node/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/mirador-cv/mirador-node/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/mirador-cv/mirador-node" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>
+<a name="mirador-nodejs-client" class="anchor" href="#mirador-nodejs-client"><span class="octicon octicon-link"></span></a>Mirador Node.js Client</h1>
+
+<h2>
+<a name="npm-install-mirador-cv" class="anchor" href="#npm-install-mirador-cv"><span class="octicon octicon-link"></span></a><code>npm install mirador-cv</code>
+</h2>
+
+<p>Node.js client for the mirador API</p>
+
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>The client is available via npm:</p>
+
+<div class="highlight highlight-bash"><pre><span class="c"># save into your package.json file</span>
+npm install mirador-cv --save
+</pre></div>
+
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<h3>
+<a name="overview" class="anchor" href="#overview"><span class="octicon octicon-link"></span></a>Overview</h3>
+
+<h4>
+<a name="methods" class="anchor" href="#methods"><span class="octicon octicon-link"></span></a>Methods</h4>
+
+<ul>
+<li><code>classifyUrls(url, [url...], function (errors, results) {})</code></li>
+<li><code>classifyFiles(filename, [filename...], function (errors, results) {})</code></li>
+<li><code>classifyBuffers(buffer, [buffer...], function (errors, results) {})</code></li>
+</ul><h4>
+<a name="input" class="anchor" href="#input"><span class="octicon octicon-link"></span></a>Input</h4>
+
+<ul>
+<li>url, filename, <code>Buffer</code> object - these will get a default ID (see below)</li>
+<li>
+<code>{ id: 'request-id', data: url|filename|Buffer }</code> - specify an ID, will be attached to response</li>
+</ul><h4>
+<a name="response-objects" class="anchor" href="#response-objects"><span class="octicon octicon-link"></span></a>Response Objects</h4>
+
+<p><code>MiradorResponse</code></p>
+
+<ul>
+<li>
+<code>MiradorResponse#id</code> (string, number) - the ID (default or specified) for the image</li>
+<li>
+<code>MiradorResponse#value</code> (float - 0.0-1.0) - the likelyhood of the image being unsafe (for setting custom threshold)</li>
+<li>
+<code>MiradorResponse#safe</code> (boolean) - whether or not image is safe</li>
+</ul><h3>
+<a name="classifying-urls" class="anchor" href="#classifying-urls"><span class="octicon octicon-link"></span></a>Classifying URL(s)</h3>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">MiradorClient</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'mirador'</span><span class="p">).</span><span class="nx">MiradorClient</span><span class="p">,</span>
+    <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MiradorClient</span><span class="p">(</span><span class="s1">'your_api_key'</span><span class="p">);</span>
+
+
+<span class="c1">// classify 3 urls</span>
+<span class="c1">// you can either pass in urls and a callback, or a list of urls and a callback</span>
+<span class="nx">client</span><span class="p">.</span><span class="nx">classifyUrls</span><span class="p">(</span><span class="s1">'http://demo.mirador.im/test/baby.jpg'</span><span class="p">,</span> <span class="s1">'http://demo.mirador.im/test/sfw.jpg'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">results</span><span class="p">)</span> <span class="p">{</span>
+
+<span class="p">});</span>
+
+<span class="c1">// -- equal to --</span>
+<span class="nx">client</span><span class="p">.</span><span class="nx">classifyUrls</span><span class="p">([</span><span class="s1">'http://demo.mirador.im/test/baby.jpg'</span><span class="p">,</span> <span class="s1">'http://demo.mirador.im/test/sfw.jpg'</span><span class="p">],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">results</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">throw</span> <span class="nx">err</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">id</span> <span class="k">in</span> <span class="nx">results</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="c1">// id is the url in this case, because you didn't specify..</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">results</span><span class="p">[</span><span class="nx">id</span><span class="p">].</span><span class="nx">value</span><span class="p">,</span> <span class="nx">results</span><span class="p">[</span><span class="nx">id</span><span class="p">].</span><span class="nx">safe</span><span class="p">);</span>
+
+  <span class="p">}</span>
+
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">results</span><span class="p">[</span><span class="s1">'http://demo.mirador.im/test/baby.jpg'</span><span class="p">]);</span>
+
+<span class="p">});</span>
+
+<span class="c1">// you can also specify an id for each image you pass in</span>
+<span class="nx">client</span><span class="p">.</span><span class="nx">classifyUrls</span><span class="p">([{</span> <span class="nx">id</span><span class="o">:</span> <span class="s1">'baby'</span><span class="p">,</span> <span class="nx">data</span><span class="o">:</span> <span class="s1">'http://demo.mirador.im/test/baby.jpg'</span><span class="p">}],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">results</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+    <span class="k">throw</span> <span class="nx">err</span><span class="p">;</span>
+
+  <span class="c1">// you can reference by the id you passed in</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">results</span><span class="p">.</span><span class="nx">baby</span><span class="p">,</span> <span class="nx">results</span><span class="p">.</span><span class="nx">baby</span><span class="p">.</span><span class="nx">safe</span><span class="p">);</span>
+
+<span class="p">});</span>
+
+</pre></div>
+
+<h3>
+<a name="classifying-files-by-name" class="anchor" href="#classifying-files-by-name"><span class="octicon octicon-link"></span></a>Classifying Files by Name</h3>
+
+<p>The method signature and results for classifying files is the same as by urls:</p>
+
+<div class="highlight highlight-javascript"><pre>
+<span class="nx">client</span><span class="p">.</span><span class="nx">classifyFiles</span><span class="p">(</span><span class="s1">'myimage.jpg'</span><span class="p">,</span> <span class="s1">'coolpix.jpg'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">results</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="c1">// results have the filename as the id by default</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">results</span><span class="p">[</span><span class="s1">'myimage.jpg'</span><span class="p">])</span>  
+
+<span class="p">});</span>
+
+<span class="c1">// or.. specify an id</span>
+<span class="nx">client</span><span class="p">.</span><span class="nx">classifyFiles</span><span class="p">([{</span> <span class="nx">id</span><span class="o">:</span> <span class="s1">'coolpix'</span><span class="p">,</span> <span class="nx">data</span><span class="o">:</span> <span class="s1">'coolpix.jpg'</span> <span class="p">}],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">results</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="c1">// the id is now 'coolpix'</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">results</span><span class="p">.</span><span class="nx">coolpix</span><span class="p">);</span>
+
+<span class="p">});</span>
+
+</pre></div>
+
+<h3>
+<a name="classifying-image-buffer-objects" class="anchor" href="#classifying-image-buffer-objects"><span class="octicon octicon-link"></span></a>Classifying Image <code>Buffer</code> objects</h3>
+
+<p>You can also classify image buffers with <code>classifyBuffers</code>, same API as previous methods, just using buffers:</p>
+
+<div class="highlight highlight-javascript"><pre>
+<span class="kd">var</span> <span class="nx">myImage</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="s1">'coolpix.jpg'</span><span class="p">);</span>
+
+<span class="nx">client</span><span class="p">.</span><span class="nx">classifyBuffers</span><span class="p">(</span><span class="nx">myImage</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">results</span><span class="p">)</span> <span class="p">{</span> 
+
+  <span class="c1">// since it's a buffer and we have nothing to go off of, the id</span>
+  <span class="c1">// becomes the index in the list of buffers passed in</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+
+<span class="p">});</span>
+
+<span class="nx">client</span><span class="p">.</span><span class="nx">classifyBuffers</span><span class="p">([{</span> <span class="nx">id</span><span class="o">:</span> <span class="s1">'coolpix'</span><span class="p">,</span> <span class="nx">data</span><span class="o">:</span> <span class="nx">myImage</span> <span class="p">}],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">results</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="c1">// really preferred; now you can keep track a lot more easily</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">results</span><span class="p">.</span><span class="nx">coolpix</span><span class="p">);</span>
+
+<span class="p">});</span>
+
+</pre></div>
+
+<h2>
+<a name="testing" class="anchor" href="#testing"><span class="octicon octicon-link"></span></a>Testing</h2>
+
+<p>Tests are in <code>test/test.js</code>, written with nodeunit. Supply an API Key and run:</p>
+
+<div class="highlight highlight-bash"><pre><span class="nv">MIRADOR_API_KEY</span><span class="o">=</span>your_api_key nodeunit <span class="nb">test</span>/test.js
+
+<span class="c"># or using npm</span>
+<span class="nv">MIRADOR_API_KEY</span><span class="o">=</span>your_api_key npm <span class="nb">test</span>
+</pre></div>
+
+<h2>
+<a name="supportquestions" class="anchor" href="#supportquestions"><span class="octicon octicon-link"></span></a>Support/Questions</h2>
+
+<p>Please submit any bugs/feature requests through github, or email support [at] mirador.im</p>
+        </section>
+
+        <footer>
+          Mirador-node is maintained by <a href="https://github.com/mirador-cv">mirador-cv</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
