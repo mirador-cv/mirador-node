@@ -10,6 +10,7 @@ var fs = require('fs'),
 module.exports = {
 
   testClassifyUrl: function (test) {
+
     test.expect(10);
 
     var client = new MiradorClient(apikey);
