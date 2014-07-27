@@ -1,6 +1,6 @@
 {
   "name": "mirador-cv",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Node.js client for Mirador API (http://mirador.im)",
   "main": "index.js",
   "scripts": {

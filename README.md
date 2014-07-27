@@ -14,6 +14,29 @@ npm install mirador-cv --save
 
 ## Usage
 
+### Overview
+
+
+#### Methods
+
+* `classifyUrls(url, [url...], function (errors, results) {})`
+* `classifyFiles(filename, [filename...], function (errors, results) {})`
+* `classifyBuffers(buffer, [buffer...], function (errors, results) {})`
+
+#### Input
+
+* url, filename, `Buffer` object - these will get a default ID (see below)
+* `{ id: 'request-id', data: url|filename|Buffer }` - specify an ID, will be attached to response
+
+#### Response Objects
+
+`MiradorResponse`
+
+* `MiradorResponse#id` (string, number) - the ID (default or specified) for the image
+* `MiradorResponse#value` (float - 0.0-1.0) - the likelyhood of the image being unsafe (for setting custom threshold)
+* `MiradorResponse#safe` (boolean) - whether or not image is safe
+
+
 ### Classifying URL(s)
 
 ```javascript
@@ -28,7 +51,7 @@ client.classifyUrls('http://demo.mirador.im/test/baby.jpg', 'http://demo.mirador
 });
 
 // -- equal to --
-client.classifyUrl(['http://demo.mirador.im/test/baby.jpg', 'http://demo.mirador.im/test/sfw.jpg'], function (err, results) {
+client.classifyUrls(['http://demo.mirador.im/test/baby.jpg', 'http://demo.mirador.im/test/sfw.jpg'], function (err, results) {
 
   if (err) {
     throw err;
@@ -40,6 +63,8 @@ client.classifyUrl(['http://demo.mirador.im/test/baby.jpg', 'http://demo.mirador
     console.log(id, results[id].value, results[id].safe);
 
   }
+
+  console.log(results['http://demo.mirador.im/test/baby.jpg']);
 
 });
 
@@ -109,7 +134,10 @@ client.classifyBuffers([{ id: 'coolpix', data: myImage }], function (err, result
 Tests are in `test/test.js`, written with nodeunit. Supply an API Key and run:
 
 ```bash
-nodeunit test/test.js
+MIRADOR_API_KEY=your_api_key nodeunit test/test.js
+
+# or using npm
+MIRADOR_API_KEY=your_api_key npm test
 ```
 
 ## Support/Questions
