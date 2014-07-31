@@ -1,0 +1,150 @@
+<!doctype html>
+<head>
+  <script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js'></script>
+  <script src='/build/mirador.js'></script>
+  <style>
+
+    body {
+      font-family: 'Helvetica Neue';
+    }
+
+    #main {
+      width: 60%;
+      margin: 10% auto;
+      padding: 2em;
+    }
+
+    .loading {
+
+      background: #ddd;
+      position: relative;
+
+    }
+
+    .loading:after {
+
+      position: absolute;
+      left: 0;
+      top: 0%;
+
+      height: 100%;
+      width: 100%;
+
+      content: 'loading';
+      text-align: center;
+
+    }
+
+    table {
+      padding: 1em;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div id='main'>
+    <input id=image type=file accept='image/jpg,image/png' multiple=false/>
+    <label>url (jquery)
+      <input id='url-jq' type=url/>
+    </label>
+    <label>url
+      <input id='url' type=url/>
+    </label>
+    <div id='results'>
+      <img id='display' src='http://demo.mirador.im/mirador_logo.png' width=300 />
+      <table>
+        <thead>
+          <tr>
+            <th>safe</th>
+            <th>breast</th>
+            <th>penis</th>
+            <th>vagina</th>
+            <th>butt</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr id='r-row' class=''>
+            <td id='r-safe'></td>
+            <td id='r-breast'></td>
+            <td id='r-penis'></td>
+            <td id='r-vagina'></td>
+            <td id='r-butt'></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    var $image = $('#image'),
+        $display = $('#display');
+
+    $image.mirador('your_api_key');
+
+    $image.on('change', function (e) {
+      if (this.files && this.files.length) {
+        var reader = new window.FileReader();
+
+        reader.onload = function (e) {
+
+          $display.attr('src', e.target.result);
+
+        }
+
+        $('#r-row').addClass('loading');
+
+        reader.readAsDataURL(this.files[0]);
+        return true;
+      }
+
+    });
+
+    $('#url-jq').on('change', function (e) {
+
+      $.mirador.classifyUrls(this.value);
+      $display.attr('src', this.value);
+
+    });
+
+    $('#url').on('change', function (e) {
+
+      $.mirador.client.classifyUrls(this.value, function (err, results) {
+
+
+        if (results) {
+          $(document).trigger('mirador.result', results);
+        }
+
+        if (err) {
+          $(document).trigger('mirador.error', err);
+        }
+
+      });
+
+      $display.attr('src', this.value);
+
+    });
+
+
+
+    $(document).on('mirador.result', function (e, results) {
+
+      for(var fname in results) {
+        var res = results[fname];
+
+        $('#r-safe').text(res.safe ? 'Safe' : 'Unsafe');
+        $('#r-breast').text(res.breast);
+        $('#r-penis').text(res.penis);
+        $('#r-vagina').text(res.vagina);
+        $('#r-butt').text(res.butt);
+
+        $('#r-row').removeClass('loading');
+
+      }
+
+    });
+
+  </script>
+
+</body>
