@@ -113,11 +113,11 @@
 
 
         if (results) {
-          $(document).trigger('mirador.result', results);
+          $(document).trigger('result.mirador', results);
         }
 
         if (err) {
-          $(document).trigger('mirador.error', err);
+          $(document).trigger('error.mirador', err);
         }
 
       });
@@ -128,7 +128,7 @@
 
 
 
-    $(document).on('mirador.result', function (e, results) {
+    $(document).on('result.mirador', function (e, results) {
 
       for(var fname in results) {
         var res = results[fname];
