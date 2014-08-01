@@ -1,7 +1,13 @@
 <!doctype html>
 <head>
   <script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js'></script>
-  <script src='/build/mirador.js'></script>
+  <script>
+    var ww = window, d = ww.document;
+    ww.mirador_fnx = []; ww.mirador_jnx = []; ww.mirador = function (){ ww.mirador_fnx.push(arguments); };
+    (ww.jQuery || {}).mirador = function (){ ww.mirador_jnx.push(arguments); };
+    var s = d.createElement('script'), h = d.getElementsByTagName('HEAD')[0];
+    s.src = '/mirador.min.js'; s.async = true; h.appendChild(s);
+  </script>
   <style>
 
     body {
@@ -46,13 +52,17 @@
   <div id='main'>
     <input id=image type=file accept='image/jpg,image/png' multiple=false/>
     <label>url (jquery)
-      <input id='url-jq' type=url/>
+      <input id='url-jq' type='url'/>
     </label>
     <label>url
-      <input id='url' type=url/>
+      <input id='url' type='url'/>
     </label>
     <div id='results'>
       <img id='display' src='http://demo.mirador.im/mirador_logo.png' width=300 />
+
+      <div id='error-msg'>
+      </div>
+
       <table>
         <thead>
           <tr>
@@ -77,71 +87,56 @@
   </div>
 
   <script>
-    var $image = $('#image'),
-        $display = $('#display');
+    $.mirador('demo69', function (mc, mm) {
 
-    $image.mirador('your_api_key');
+      var $doc = $(document),
+          $image = $('#image'),
+          $display = $('#display');
 
-    $image.on('change', function (e) {
-      if (this.files && this.files.length) {
-        var reader = new window.FileReader();
+      $doc.on('change', "input[type='url']", function (e) {
 
-        reader.onload = function (e) {
+        console.log('url change', this.value);
 
-          $display.attr('src', e.target.result);
-
-        }
-
-        $('#r-row').addClass('loading');
-
-        reader.readAsDataURL(this.files[0]);
-        return true;
-      }
-
-    });
-
-    $('#url-jq').on('change', function (e) {
-
-      $.mirador.classifyUrls(this.value);
-      $display.attr('src', this.value);
-
-    });
-
-    $('#url').on('change', function (e) {
-
-      $.mirador.client.classifyUrls(this.value, function (err, results) {
-
-
-        if (results) {
-          $(document).trigger('result.mirador', results);
-        }
-
-        if (err) {
-          $(document).trigger('error.mirador', err);
-        }
+        mc.classifyUrls(this.value);
+        $display.attr('src', this.value);
 
       });
 
-      $display.attr('src', this.value);
+      $doc.on('change', 'input[type="file"]', function (e) {
+        if (!this.files || !this.files.length) return
 
-    });
+        // read the file into the display
+        reader = new window.FileReader();
+        reader.onload = function (e) {
+          $display.attr('src', e.target.result);
+        }
 
+        reader.readAsDataURL(this.files[0]);
+      });
 
+      $doc.on('mirador.result', function (e, results) {
 
-    $(document).on('result.mirador', function (e, results) {
+        for(var fname in results) {
+          var res = results[fname];
 
-      for(var fname in results) {
-        var res = results[fname];
+          $('#r-safe').text(res.safe ? 'Safe' : 'Unsafe');
+          $('#r-breast').text(res.breast);
+          $('#r-penis').text(res.penis);
+          $('#r-vagina').text(res.vagina);
+          $('#r-butt').text(res.butt);
 
-        $('#r-safe').text(res.safe ? 'Safe' : 'Unsafe');
-        $('#r-breast').text(res.breast);
-        $('#r-penis').text(res.penis);
-        $('#r-vagina').text(res.vagina);
-        $('#r-butt').text(res.butt);
+          $('#r-row').removeClass('loading');
 
-        $('#r-row').removeClass('loading');
+        }
 
-      }
+        $('#error-msg').html('');
+
+      });
+
+      $doc.on('mirador.error', function (e, error) {
+        $('#error-msg').html("<h3>" + error.status + "</h3><p>" + error.errors + "</p>");
+      });
+
 
     });
 

@@ -42,6 +42,8 @@
   },
   "browser": {
     "fs": "./lib/fs-browser.js",
-    "main": "./lib/browser.js"
+    "main": "./lib/browser.js",
+    "superagent": "./lib/fs-browser.js",
+    "async": "./lib/async-browser.js"
   }
 }
