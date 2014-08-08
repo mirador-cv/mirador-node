@@ -145,5 +145,20 @@ module.exports = {
 
   },
 
+  testSingleUrl: function (test) {
+    var c = new MiradorClient(apikey);
+
+    test.expect(2);
+
+    c.classifyUrl('http://static.mirador.im/test/nsfw.jpg', function (err, result) {
+
+      test.ok(result.value);
+      test.ok(!result.safe);
+
+      test.done();
+    });
+
+  },
+
 
 };
