@@ -23,6 +23,8 @@ npm install mirador-cv --save
 * `classifyUrls(url, [url...], function (errors, results) {})`
 * `classifyFiles(filename, [filename...], function (errors, results) {})`
 * `classifyBuffers(buffer, [buffer...], function (errors, results) {})`
+* `classifyDataUri({ id: 'id', data: 'data:image/jpg;base64,...'},..[datauri request objects], function (errors, results) {})`
+* `classifyCanvas({ id: 'canvas-id', data: $('canvas')[0] },..., function (errors, results) {})`
 
 #### Input
 

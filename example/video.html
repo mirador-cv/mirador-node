@@ -1,0 +1,31 @@
+<!doctype html>
+<head>
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <style>
+    .safe {
+      border: 4px solid #0f0;
+    }
+    .unsafe {
+      border: 4px solid #f00;
+    }
+  </style>
+  <script>
+    var ww = window, d = ww.document;
+    ww.mirador_fnx = []; ww.mirador_jnx = []; ww.mirador = function (){ ww.mirador_fnx.push(arguments); };
+    (ww.jQuery || {}).mirador = function (){ ww.mirador_jnx.push(arguments); };
+    var s = d.createElement('script'), h = d.getElementsByTagName('HEAD')[0];
+    s.src = '/mirador.min.js'; s.async = true; h.appendChild(s);
+  </script>
+</head>
+<body>
+  <img id='porn' src='http://static.mirador.im/test/nsfw.jpg' hidden style='display:none;'/>
+  <video id='v' hidden style='display:none;' autoplay=true></video>
+  <div>
+    <canvas id='canvas' width=500 height=500></canvas>
+    <div>
+      <div id='safe'></div>
+      <div id='value'></div>
+    </div>
+  </div>
+  <script src='/video.js'></script>
+</body>
