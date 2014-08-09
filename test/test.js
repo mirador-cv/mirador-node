@@ -160,5 +160,39 @@ module.exports = {
 
   },
 
+  testSingleBuffer: function (test) { 
+    test.expect(2);
+
+    var c = new MiradorClient(apikey);
+    var nsfw_b = fs.readFileSync('images/nsfw.jpg');
+
+    c.classifyBuffer(nsfw_b, function (err, nsfw) {
+
+      test.ok(nsfw.value);
+      test.ok(!nsfw.safe);
+
+      test.done();
+    });
+
+
+
+  },
+
+  testclassifyRawDeprecation: function (test) {
+    test.expect(1);
+
+    var c = new MiradorClient(apikey);
+    var nsfw_b = fs.readFileSync('images/nsfw.jpg');
+
+    c.classifyRaw(nsfw_b, function (err, results) {
+
+      test.ok(results);
+      test.done();
+
+    });
+
+
+  },
+
 
 };
